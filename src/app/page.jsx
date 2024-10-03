@@ -54,7 +54,7 @@ const Welcome = () => {
           <img className='rounded-l-full rounded-r-full relative inline-block transition-transform duration-300 hover:scale-105 after:block after:h-0.5 after:w-0 after:bg-black after:transition-all after:duration-300 hover:after:w-full' src='./masculine man.jpeg' alt='photo of girl' />
         </div>
         <div className='w-1/2 flex justify-center'>
-          <h1 className='mt-12 text-6xl text-white font-bold relative inline-block transition-transform duration-300 hover:scale-105 after:block after:h-0.5 after:w-0 after:bg-black after:transition-all after:duration-300 hover:after:w-full'>Promote fitness in individuals</h1>
+          <h1 className='mt-12 text-6xl text-white font-bold relative inline-block transition-transform duration-300 hover:scale-105 after:block after:h-0.5 after:w-0 after:bg-black after:transition-all after:duration-300 hover:after:w-full'>Promote influencial events</h1>
         </div>
       </div>
       <hr />
