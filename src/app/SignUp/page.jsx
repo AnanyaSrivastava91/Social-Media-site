@@ -97,7 +97,6 @@ const Signup = () => {
             >
               Submit
             </button>
-
             <p className="text-white text-center">Already have an account?</p>
 
             {/* Centering the last button */}
@@ -115,5 +114,4 @@ const Signup = () => {
     </div>
   );
 };
-
 export default Signup;
