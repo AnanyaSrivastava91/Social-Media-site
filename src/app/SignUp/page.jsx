@@ -17,18 +17,11 @@ const Signup = () => {
   });
 
   return (
-    <div className="relative min-h-screen">
-      {/* Background image */}
-      <img
-        src="./bg image.jpg"
-        alt="background"
-        className="absolute inset-0 w-full h-full object-cover"
-      />
-
+    <div className="relative min-h-screen bg-gradient-to-r from-[#780206] to-[#061161]">
       {/* Form container */}
-      <div className="relative flex justify-center items-center min-h-screen">
-        <div className="max-w-lg w-full rounded-lg shadow-lg p-10 bg-black bg-opacity-50 backdrop-blur-sm">
-          <h1 className="text-2xl font-extrabold uppercase mb-6 text-center text-white">
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="max-w-lg w-full rounded-lg shadow-lg p-10 bg-gradient-to-r from-[#C04848] to-[#480048]">
+          <h1 className="text-3xl font-extrabold uppercase mb-6 text-center text-white relative inline-block transition-transform duration-300 hover:scale-105 after:block after:h-0.5 after:w-0 after:bg-black after:transition-all after:duration-300 hover:after:w-full">
             Signup Page
           </h1>
           <form onSubmit={signupForm.handleSubmit} className="space-y-4 rounded-3xl">
@@ -39,7 +32,7 @@ const Signup = () => {
                 id="name"
                 onChange={signupForm.handleChange}
                 value={signupForm.values.name}
-                className="w-full p-2 border rounded-lg my-2 bg-gray-100"
+                className="w-full p-2 border rounded-lg my-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#C04848] transition duration-300"
               />
               {signupForm.touched.name && signupForm.errors.name && (
                 <p className="text-red-500 mb-5 text-sm">{signupForm.errors.name}</p>
@@ -53,7 +46,7 @@ const Signup = () => {
                 id="email"
                 onChange={signupForm.handleChange}
                 value={signupForm.values.email}
-                className="w-full p-2 border rounded-lg my-2 bg-gray-100"
+                className="w-full p-2 border rounded-lg my-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#C04848] transition duration-300"
               />
               {signupForm.touched.email && signupForm.errors.email && (
                 <p className="text-red-500 mb-5 text-sm">{signupForm.errors.email}</p>
@@ -67,7 +60,7 @@ const Signup = () => {
                 id="password"
                 onChange={signupForm.handleChange}
                 value={signupForm.values.password}
-                className="w-full p-2 border rounded-lg my-2 bg-gray-100"
+                className="w-full p-2 border rounded-lg my-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#C04848] transition duration-300"
               />
               {signupForm.touched.password && signupForm.errors.password && (
                 <p className="text-red-500 mb-5 text-sm">{signupForm.errors.password}</p>
@@ -81,7 +74,7 @@ const Signup = () => {
                 id="confirmPassword"
                 onChange={signupForm.handleChange}
                 value={signupForm.values.confirmPassword}
-                className="w-full p-2 border rounded-lg my-2 bg-gray-100"
+                className="w-full p-2 border rounded-lg my-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#C04848] transition duration-300"
               />
               {signupForm.touched.confirmPassword && signupForm.errors.confirmPassword && (
                 <p className="text-red-500 mb-5 text-sm">
@@ -93,7 +86,7 @@ const Signup = () => {
             <button
               disabled={signupForm.isSubmitting}
               type="submit"
-              className="bg-black mt-6 px-3 py-2 rounded text-white font-bold w-full disabled:bg-gray-400"
+              className="bg-black mt-6 px-3 py-2 rounded text-white font-bold w-full disabled:bg-gray-400 transition-transform duration-300 hover:scale-105"
             >
               Submit
             </button>
@@ -101,7 +94,7 @@ const Signup = () => {
 
             {/* Centering the last button */}
             <div className="flex justify-center">
-              <button className="bg-black px-6 py-2 rounded-lg">
+              <button className="bg-black px-6 py-2 rounded-lg transition-transform duration-300 hover:scale-105">
                 <a className="text-white text-center" href="#">
                   Let's get you Logged!
                 </a>
@@ -114,4 +107,5 @@ const Signup = () => {
     </div>
   );
 };
+
 export default Signup;
