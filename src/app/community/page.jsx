@@ -1,12 +1,13 @@
 'use client';
 import React, { useState } from 'react';
-import { FaHeart, FaRegCommentDots, FaUserCircle } from 'react-icons/fa';
+import { FaHeart, FaCommentDots, FaUserCircle } from 'react-icons/fa';
 
-const FeedPage = () => {
+const CommunityPage = () => {
   const [posts, setPosts] = useState([
     {
       id: 1,
       username: 'user_1',
+      content: 'Excited to join this amazing community!',
       imageUrl: 'https://via.placeholder.com/400',
       likes: 0,
       comments: [],
@@ -14,6 +15,7 @@ const FeedPage = () => {
     {
       id: 2,
       username: 'user_2',
+      content: 'Just finished a new project! Check it out!',
       imageUrl: 'https://via.placeholder.com/400',
       likes: 0,
       comments: [],
@@ -37,27 +39,53 @@ const FeedPage = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-r from-[#780206] to-[#061161]">
+    <div className="relative min-h-screen bg-gradient-to-r from-[#780206] to-[#061161] p-4">
       {/* Navbar */}
-      <nav className="absolute top-0 left-0 right-0 flex justify-between items-center p-5">
-        <img src="./flexin.png" alt="Logo" className="h-12 w-auto rounded-l-full rounded-r-full" />
-        <FaUserCircle className="text-white text-3xl cursor-pointer" />
+      <nav className="absolute top-0 left-0 right-0 p-4 bg-gradient-to-r from-black to-gray-950">
+        <div className="container mx-auto flex justify-between items-center">
+          <div className="text-white text-3xl font-bold">Community</div>
+          <FaUserCircle className="text-white text-3xl cursor-pointer" />
+        </div>
       </nav>
 
-      {/* Feed container */}
-      <div className="relative flex flex-col items-center min-h-screen pt-20">
-        <h1 className="text-3xl font-extrabold uppercase mb-6 text-center text-white transition-transform duration-300 hover:scale-105">
-          Feed Page
-        </h1>
+      <div className="flex pt-16">
+        {/* Main Content Area */}
+        <div className="w-3/4 p-4">
+          <h1 className="text-4xl text-white font-bold mb-6">Community Feed</h1>
 
-        {posts.map((post) => (
-          <Post
-            key={post.id}
-            post={post}
-            onLike={handleLike}
-            onAddComment={handleAddComment}
-          />
-        ))}
+          {posts.map((post) => (
+            <Post
+              key={post.id}
+              post={post}
+              onLike={handleLike}
+              onAddComment={handleAddComment}
+            />
+          ))}
+
+          {/* Create Post Section */}
+          <div className="bg-gray-800 p-6 rounded-lg shadow-lg mt-6">
+            <h2 className="text-white font-bold text-xl mb-4">Create a Post</h2>
+            <textarea
+              className="w-full p-4 rounded-lg mb-4 bg-gray-700 text-white"
+              placeholder="What's on your mind?"
+            />
+            <button className="bg-blue-500 text-white px-4 py-2 rounded-lg">
+              Post
+            </button>
+          </div>
+        </div>
+
+        {/* Sidebar (Trending Topics) */}
+        <div className="w-1/4 p-4 bg-gray-900 rounded-lg shadow-lg">
+          <h2 className="text-white font-bold text-2xl mb-4">Trending Topics</h2>
+          <ul className="text-white space-y-2">
+            <li>#NewProjects</li>
+            <li>#JavaScriptTips</li>
+            <li>#AIRevolution</li>
+            <li>#MERNStack</li>
+            <li>#SpringBoot</li>
+          </ul>
+        </div>
       </div>
     </div>
   );
@@ -77,8 +105,9 @@ const Post = ({ post, onLike, onAddComment }) => {
   };
 
   return (
-    <div className="max-w-lg w-full rounded-lg shadow-lg p-10 bg-gradient-to-r from-[#C04848] to-[#480048] mb-6">
+    <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-6">
       <h4 className="text-white font-bold">{post.username}</h4>
+      <p className="text-white">{post.content}</p>
       <img
         src={post.imageUrl}
         alt="Post"
@@ -87,16 +116,16 @@ const Post = ({ post, onLike, onAddComment }) => {
       <div className="flex justify-between items-center mb-4">
         <button
           onClick={() => onLike(post.id)}
-          className="text-red-500 flex items-center transition-transform duration-300 hover:scale-105"
+          className="text-red-500 flex items-center"
         >
           <FaHeart className="mr-2" /> {post.likes} Likes
         </button>
 
         <button
           onClick={() => setCommentModalOpen(true)}
-          className="text-blue-500 flex items-center transition-transform duration-300 hover:scale-105"
+          className="text-blue-500 flex items-center"
         >
-          <FaRegCommentDots className="mr-2" />
+          <FaCommentDots className="mr-2" />
         </button>
       </div>
 
@@ -142,5 +171,4 @@ const Post = ({ post, onLike, onAddComment }) => {
   );
 };
 
-export default FeedPage;
- 
+export default CommunityPage;
