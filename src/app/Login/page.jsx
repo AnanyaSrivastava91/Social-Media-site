@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import axios from axios
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -8,8 +9,22 @@ const LoginPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
     console.log({ username, password, rememberMe });
   };
+  onsubmit:(values)=>{
+    console.log(values);
+
+    axios.post()
+    .then((response) => {
+      console.log(response.data)
+
+    }).catch((err) => {
+      console.log(err)
+      console.log(err?.response?.status)
+      
+    });
+  }
 
   return (
     <div className="relative min-h-screen">

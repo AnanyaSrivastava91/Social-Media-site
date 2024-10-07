@@ -1,8 +1,19 @@
 'use client';
 import { useFormik } from 'formik';
 import React from 'react';
+import axios from 'axios'; // Ensure you import axios
+import * as Yup from 'yup'; // Ensure you import Yup for validation
 
 const Signup = () => {
+  const signupSchema = Yup.object().shape({
+    name: Yup.string().required('Name is required'),
+    email: Yup.string().email('Invalid email').required('Email is required'),
+    password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref('password'), null], 'Passwords must match')
+      .required('Confirm Password is required'),
+  });
+
   const signupForm = useFormik({
     initialValues: {
       name: '',
@@ -13,14 +24,25 @@ const Signup = () => {
     onSubmit: (values, { resetForm, setSubmitting }) => {
       console.log(values);
       setSubmitting(true);
+
+      axios.post('/api/signup', values) // Update with your actual API endpoint
+        .then((result) => {
+          resetForm();
+        })
+        .catch((err) => {
+          console.log(err);
+          console.log(err?.response?.status);
+          setSubmitting(false);
+        });
     },
+    validationSchema: signupSchema,
   });
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-r from-[#780206] to-[#061161]">
+    <div className="relative min-h-screen bg-gradient-to-r from-[#152331] to-[#000000]">
       {/* Form container */}
       <div className="flex justify-center items-center min-h-screen">
-        <div className="max-w-lg w-full rounded-lg shadow-lg p-10 bg-gradient-to-r from-[#C04848] to-[#480048]">
+        <div className="max-w-lg w-full rounded-lg shadow-lg p-10 bg-gradient-to-r from-[#152331] to-[#000000]">
           <h1 className="text-3xl font-extrabold uppercase mb-6 text-center text-white relative inline-block transition-transform duration-300 hover:scale-105 after:block after:h-0.5 after:w-0 after:bg-black after:transition-all after:duration-300 hover:after:w-full">
             Signup Page
           </h1>
@@ -77,9 +99,7 @@ const Signup = () => {
                 className="w-full p-2 border rounded-lg my-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#C04848] transition duration-300"
               />
               {signupForm.touched.confirmPassword && signupForm.errors.confirmPassword && (
-                <p className="text-red-500 mb-5 text-sm">
-                  {signupForm.errors.confirmPassword}
-                </p>
+                <p className="text-red-500 mb-5 text-sm">{signupForm.errors.confirmPassword}</p>
               )}
             </div>
 
@@ -101,7 +121,6 @@ const Signup = () => {
               </button>
             </div>
           </form>
-
         </div>
       </div>
     </div>
