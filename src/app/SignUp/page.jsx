@@ -1,8 +1,7 @@
-'use client';
 import { useFormik } from 'formik';
 import React from 'react';
-import axios from 'axios'; // Ensure you import axios
-import * as Yup from 'yup'; // Ensure you import Yup for validation
+import axios from 'axios';
+import * as Yup from 'yup';
 
 const Signup = () => {
   const signupSchema = Yup.object().shape({
@@ -25,14 +24,18 @@ const Signup = () => {
       console.log(values);
       setSubmitting(true);
 
-      axios.post('/api/signup', values) // Update with your actual API endpoint
+      // Update the URL to your backend endpoint
+      axios.post('http://localhost:5000/api/signup', values)////////////////////////////////////////////////////////////////////
         .then((result) => {
+          console.log('Signup successful:', result.data);
           resetForm();
+          // You may redirect or show a success message here
         })
         .catch((err) => {
           console.log(err);
           console.log(err?.response?.status);
           setSubmitting(false);
+          // Optionally, handle specific error messages here
         });
     },
     validationSchema: signupSchema,
@@ -47,6 +50,8 @@ const Signup = () => {
             Signup Page
           </h1>
           <form onSubmit={signupForm.handleSubmit} className="space-y-4 rounded-3xl">
+            {/* Form Fields */}
+            {/* Name Field */}
             <div>
               <label htmlFor="name" className="text-white">Name</label>
               <input
@@ -61,6 +66,7 @@ const Signup = () => {
               )}
             </div>
 
+            {/* Email Field */}
             <div>
               <label htmlFor="email" className="text-white">Email Address</label>
               <input
@@ -75,6 +81,7 @@ const Signup = () => {
               )}
             </div>
 
+            {/* Password Field */}
             <div>
               <label htmlFor="password" className="text-white">Password</label>
               <input
@@ -89,6 +96,7 @@ const Signup = () => {
               )}
             </div>
 
+            {/* Confirm Password Field */}
             <div>
               <label htmlFor="confirmPassword" className="text-white">Confirm Password</label>
               <input

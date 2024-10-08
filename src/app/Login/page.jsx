@@ -1,30 +1,34 @@
 'use client';
 import React, { useState } from 'react';
-import axios from axios
+import axios from 'axios';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState(null); // For handling errors
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    console.log({ username, password, rememberMe });
+
+    // Construct the payload
+    const payload = {
+      email: username, // Assuming you use email as username
+      password,
+    };
+
+    // Make the POST request
+    axios.post('http://localhost:5000/api/login', payload)////////////////////////////////////////////
+      .then((response) => {
+        console.log(response.data);
+        // Handle successful login (e.g., save token, redirect)
+      })
+      .catch((err) => {
+        console.error(err);
+        setError('Invalid credentials, please try again.');
+        console.log(err?.response?.status);
+      });
   };
-  onsubmit:(values)=>{
-    console.log(values);
-
-    axios.post()
-    .then((response) => {
-      console.log(response.data)
-
-    }).catch((err) => {
-      console.log(err)
-      console.log(err?.response?.status)
-      
-    });
-  }
 
   return (
     <div className="relative min-h-screen">
@@ -41,6 +45,10 @@ const LoginPage = () => {
           <h1 className="text-2xl font-extrabold uppercase mb-6 text-center text-white">
             Login
           </h1>
+
+          {/* Show error message if exists */}
+          {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+
           <form onSubmit={handleSubmit} className="space-y-4 rounded-3xl">
             <div>
               <label htmlFor="username" className="text-white">Username</label>
