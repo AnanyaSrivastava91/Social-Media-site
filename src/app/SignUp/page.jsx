@@ -25,18 +25,18 @@ const Signup = () => {
       setSubmitting(true);
 
       // Update the URL to your backend endpoint
-      axios.post('http://localhost:5000/api/signup', values)////////////////////////////////////////////////////////////////////
-        .then((result) => {
-          console.log('Signup successful:', result.data);
-          resetForm();
-          // You may redirect or show a success message here
-        })
-        .catch((err) => {
-          console.log(err);
-          console.log(err?.response?.status);
-          setSubmitting(false);
-          // Optionally, handle specific error messages here
-        });
+      // axios.post('http://localhost:5000/api/signup', values)////////////////////////////////////////////////////////////////////
+      //   .then((result) => {
+      //     console.log('Signup successful:', result.data);
+      //     resetForm();
+      //     // You may redirect or show a success message here
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //     console.log(err?.response?.status);
+      //     setSubmitting(false);
+      //     // Optionally, handle specific error messages here
+      //   });
     },
     validationSchema: signupSchema,
   });

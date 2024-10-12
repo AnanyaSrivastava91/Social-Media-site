@@ -1,14 +1,24 @@
 'use client';
 import React, { useState } from 'react';
+import axios from 'axios'; // Import Axios
 
 const Feedback = () => {
   const [feedback, setFeedback] = useState('');
+  const [userId, setUserId] = useState('USER_ID'); // Replace with actual logic to get the user ID
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // You can handle the submission logic here
-    console.log('Feedback submitted:', feedback);
-    setFeedback(''); // Clear the textarea after submission
+    try {
+      // Send the feedback to the backend
+      const response = await axios.post('http://localhost:5000/api/feedback', {
+        userId: userId,
+        feedback: feedback,
+      });
+      console.log('Feedback submitted:', response.data);
+      setFeedback(''); // Clear the textarea after submission
+    } catch (error) {
+      console.error('Error submitting feedback:', error);
+    }
   };
 
   return (
