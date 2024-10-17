@@ -6,18 +6,15 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Import toastify CSS
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddPost = () => {
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
   const [communityList, setCommunityList] = useState([]);
 
   const particlesInit = async (main) => {
     await loadFull(main);
   };
 
-  // Initial values for the form
   const initialValues = {
     userId: '',
     title: '',
@@ -26,17 +23,15 @@ const AddPost = () => {
     file: null,
   };
 
-  const fetchCommunties = async () => {
+  const fetchCommunities = async () => {
     const res = await axios.get('http://localhost:5000/community/getall');
-    console.log(res.data);
     setCommunityList(res.data);
   };
 
   useEffect(() => {
-    fetchCommunties();
+    fetchCommunities();
   }, []);
 
-  // Validation schema using Yup
   const validationSchema = Yup.object({
     userId: Yup.string().required('User ID is required'),
     title: Yup.string().required('Title is required'),
@@ -45,9 +40,6 @@ const AddPost = () => {
   });
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
-    setMessage('');
-    setError('');
-
     const formData = new FormData();
     formData.append('userId', values.userId);
     formData.append('title', values.title);
@@ -58,25 +50,14 @@ const AddPost = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/post/add', {
-        method: 'POST',
-        body: formData,
+      await axios.post('http://localhost:5000/post/add', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-      if (!response.ok) {
-        throw new Error('Error creating post');
-      }
-
-      await response.json();
-      setMessage('Post created successfully!');
-      toast.success('Post created successfully!');  // Display success toast
-
-      // Clear the form fields
+      toast.success('Post created successfully!');
       resetForm();
     } catch (err) {
-      console.error(err);
-      setError('Error creating post. Please try again.');
-      toast.error('Error creating post. Please try again.');  // Display error toast
+      toast.error('Error creating post. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -91,13 +72,11 @@ const AddPost = () => {
     axios
       .post('https://api.cloudinary.com/v1_1/drluzvt3t/image/upload', fd)
       .then((result) => {
-        toast.success('File uploaded successfully!'); // Display success toast
-        console.log(result.data);
+        toast.success('File uploaded successfully!');
         setFieldValue('file', result.data.url);
       })
-      .catch((err) => {
-        console.log(err);
-        toast.error('File upload failed!'); // Display error toast
+      .catch(() => {
+        toast.error('File upload failed!');
       });
   };
 
@@ -200,9 +179,7 @@ const AddPost = () => {
             </Form>
           )}
         </Formik>
-        <ToastContainer /> {/* This will display toast messages */}
-        {message && <p className="text-green-500 mt-4 text-center">{message}</p>}
-        {error && <p className="text-red-500 mt-4 text-center">{error}</p>}
+        <ToastContainer />
       </div>
     </div>
   );
