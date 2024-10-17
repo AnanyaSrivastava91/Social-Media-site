@@ -2,55 +2,76 @@
 import React, { useEffect, useState } from 'react';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
-import { motion } from 'framer-motion';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const ManageCommunities = () => {
-  const [communities, setCommunities] = useState([]); // Start with an empty array
+  const [communities, setCommunities] = useState([]); 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newCommunity, setNewCommunity] = useState({
     name: '',
     image: null,
-    createdAt: new Date().toISOString().slice(0, 10), // Current date in YYYY-MM-DD format
+    createdAt: new Date().toISOString().slice(0, 10),
   });
 
   useEffect(() => {
-    fetchCommunities(); // Fetch communities on component mount
+    fetchCommunities(); 
   }, []);
 
   const particlesInit = async (main) => {
     await loadFull(main);
   };
 
-  const fetchCommunities = () => {
-    // Simulated fetch call (optional, if you want to load initial communities)
-    // const fetchedCommunities = [
-    //   { id: 1, name: 'Community A', image: './imageA.jpg', createdAt: '2024-01-01' },
-    //   { id: 2, name: 'Community B', image: './imageB.jpg', createdAt: '2024-01-02' },
-    // ];
-    // setCommunities(fetchedCommunities);
+  const fetchCommunities = () => {};
+
+  const uploadFile = (e) => {
+    const file = e.target.files[0];
+    const fd = new FormData();
+    fd.append('file', file);
+    fd.append('upload_preset', 'mycloud1');
+    fd.append('cloud_name', 'drluzvt3t');
+    axios
+      .post('https://api.cloudinary.com/v1_1/drluzvt3t/image/upload', fd)
+      .then((result) => {
+        toast.success('file uploading successful');
+        console.log(result.data);
+        setNewCommunity({ ...newCommunity, image: result.data.url });
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log('Something went sideways');
+      });
   };
 
   const addCommunity = (event) => {
-    event.preventDefault(); // Prevent form submission
+    event.preventDefault();
     const newCommunityData = {
       ...newCommunity,
-      id: communities.length + 1, // Assign a unique ID based on current length
+      id: communities.length + 1,
     };
-    setCommunities([...communities, newCommunityData]); // Add new community to the list
-    setIsModalOpen(false); // Close the modal after adding
-    setNewCommunity({ name: '', image: null, createdAt: new Date().toISOString().slice(0, 10) }); // Reset form
+    console.log(newCommunityData);
+    axios.post('http://localhost:5000/community/add', newCommunityData)
+    .then((result) => {
+      toast.success('community added');
+    }).catch((err) => {
+      console.log(err);
+      toast.error('something went wrong');
+    });
+    // setCommunities([...communities, newCommunityData]);
+    setIsModalOpen(false);
+    setNewCommunity({ name: '', image: null, createdAt: new Date().toISOString().slice(0, 10) });
   };
 
   const handleImageUpload = (event) => {
-    const file = event.target.files[0]; // Get the first selected file
+    const file = event.target.files[0];
     const reader = new FileReader();
     
     reader.onloadend = () => {
-      setNewCommunity({ ...newCommunity, image: reader.result }); // Set the image as data URL
+      setNewCommunity({ ...newCommunity, image: reader.result });
     };
 
     if (file) {
-      reader.readAsDataURL(file); // Read file as data URL
+      reader.readAsDataURL(file);
     }
   };
 
@@ -74,58 +95,49 @@ const ManageCommunities = () => {
 
       {/* Header Section */}
       <div className='min-h-screen flex flex-col items-center justify-center px-20 py-40 relative z-10'>
-        <motion.img
-          className='w-96 h-96 rounded-full shadow-lg object-cover'
-          src='./flexin.png' // Assuming the logo path is the same as in Welcome
+        <img
+          className='w-96 h-96 rounded-full shadow-lg object-cover transition-transform duration-500 transform hover:scale-105'
+          src='./flexin.png'
           alt='logo'
-          initial={{ scale: 0.8 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 0.5 }}
         />
-        <motion.h1
-          className='text-white text-7xl font-bold leading-tight mt-10'
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+        <h1
+          className='text-white text-7xl font-bold leading-tight mt-10 transition-opacity duration-500 opacity-0 hover:opacity-100'
         >
           Manage Your Communities
-        </motion.h1>
-        <motion.button
-          className="mt-10 bg-blue-500 text-white px-8 py-4 rounded-lg shadow-lg hover:bg-blue-600 transition duration-300"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={() => setIsModalOpen(true)} // Open modal on button click
+        </h1>
+        <button
+          className="mt-10 bg-blue-500 text-white px-8 py-4 rounded-lg shadow-lg hover:bg-blue-600 transition-transform duration-300 transform hover:scale-105"
+          onClick={() => setIsModalOpen(true)}
         >
           Add Community
-        </motion.button>
+        </button>
       </div>
 
       {/* Community List Section */}
       <div className='flex flex-col items-center p-20 bg-gradient-to-br from-gray-800 via-gray-900 to-black'>
         <h2 className="text-4xl text-white font-bold mb-10">Your Communities</h2>
         <div className="grid grid-cols-3 gap-10">
-          {communities.length > 0 ? ( // Only display if there are communities
+          {communities.length > 0 ? (
             communities.map((community) => (
-              <motion.div
+              <div
                 key={community.id}
-                className="relative group bg-white shadow-lg rounded-lg p-4 hover:shadow-2xl transition duration-300 ease-in-out"
-                whileHover={{ scale: 1.05 }}
+                className="relative group bg-white shadow-lg rounded-lg p-4 hover:shadow-2xl transition-transform duration-300 transform hover:scale-105"
               >
                 <h3 className="text-black text-xl font-semibold">{community.name}</h3>
                 <img src={community.image} alt={community.name} className="rounded-lg h-32 object-cover mb-2" />
                 <p className="text-gray-600">Created At: {community.createdAt}</p>
-              </motion.div>
+              </div>
             ))
           ) : (
-            <p className="text-white">No communities created yet. Add one to get started!</p> // Message when there are no communities
+            <p className="text-white">No communities created yet. Add one to get started!</p>
           )}
         </div>
       </div>
 
       {/* Modal for Adding Community */}
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50"> {/* Increased opacity and z-index */}
-          <div className="bg-white rounded-lg p-8 shadow-lg w-96 relative z-50"> {/* Added z-index */}
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
+          <div className="bg-white rounded-lg p-8 shadow-lg w-96 relative z-50">
             <h2 className="text-xl font-bold mb-4">Add New Community</h2>
             <form onSubmit={addCommunity}>
               <div className="mb-4">
@@ -143,7 +155,7 @@ const ManageCommunities = () => {
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={handleImageUpload}
+                  onChange={uploadFile}
                   required
                   className="border rounded-md w-full p-2"
                 />
@@ -162,7 +174,7 @@ const ManageCommunities = () => {
                 <button
                   type="button"
                   className="bg-red-500 text-white px-4 py-2 rounded-lg"
-                  onClick={() => setIsModalOpen(false)} // Close modal
+                  onClick={() => setIsModalOpen(false)}
                 >
                   Cancel
                 </button>

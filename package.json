@@ -10,9 +10,14 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.6.0",
+    "axios": "^1.7.7",
+    "formik": "^2.4.6",
+    "framer-motion": "^11.11.9",
     "next": "14.2.13",
     "react": "^18",
     "react-dom": "^18",
+    "react-hot-toast": "^2.4.1",
+    "react-toastify": "^10.0.6",
     "react-tsparticles": "^2.12.2",
     "tsparticles": "^3.5.0",
     "yup": "^1.4.0"
